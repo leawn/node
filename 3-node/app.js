@@ -1,6 +1,7 @@
 const http = require('http');
 const routes = require('./routes');
 
+console.log('nodemon works');
 console.log(routes.newOne);
 const server = http.createServer(routes.handler);
 

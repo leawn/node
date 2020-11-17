@@ -38,5 +38,5 @@ const requestHandler = (req, res) => {
 
 module.exports = {
     handler: requestHandler,
-    newOne: 'lakfdsljfs'
+    newOne: 'hey there'
 };
