@@ -1,0 +1,17 @@
+<%- include('includes/head.ejs') %>
+<body>
+    <%- include('includes/navigation.ejs') %>
+<main>
+    <% if (users.length > 0) { %>
+            <ul>
+                <% users.map((user) => { %>
+                    <li>
+                        <%= user.username %>
+                    </li>
+                <% }) %>
+            </ul>
+    <% } else { %>
+        <h1>No Users</h1>
+    <% } %>
+</main>
+<%- include('includes/end.ejs') %>
