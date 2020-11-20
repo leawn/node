@@ -1,11 +1,11 @@
 <%- include('includes/head.ejs') %>
 <body>
-    <%- include('includes/navigation.ejs') %>
+<%- include('includes/navigation.ejs') %>
 
-    <main>
-        <% if (prods.length > 0) { %>
-            <div class="grid">
-                <% prods.map((product) => { %>
+<main>
+    <% if (prods.length > 0) { %>
+        <div class="grid">
+            <% prods.map((product) => { %>
                 <article class="card product-item">
                     <header class="card__header">
                         <h1 class="product__title"><%= product.title %></h1>
@@ -23,11 +23,11 @@
                         </button>
                     </div>
                 </article>
-                <% }) %>
-            </div>
-        <% } else { %>
-            <h1>No Products</h1>
-        <% } %>
-    </main>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <h1>No Products</h1>
+    <% } %>
+</main>
 
 <%- include('includes/end.ejs') %>
