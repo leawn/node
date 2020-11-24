@@ -3,7 +3,9 @@ const Product = require('../models/Product');
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/add-product', {
         pageTitle: 'Add Product',
-        path: '/admin/add-product'
+        path: '/admin/add-product',
+        productCss: true,
+        formsCss: true
     });
 }
 
@@ -19,7 +21,9 @@ exports.getProducts = (req, res, next) => {
             prods: products,
             pageTitle: 'Admin Product List',
             path: '/admin/product-admin',
-            hasProducts: products.length > 0
+            hasProducts: products.length > 0,
+            productCss: true,
+            formsCss: true
         });
     });
 }
