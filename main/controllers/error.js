@@ -4,6 +4,6 @@ exports.getNotFound = (req, res, next) => {
         activeShop: false,
         formsCss: false,
         productCss: false,
-        path: undefined
+        path: '/404'
     });
 }
