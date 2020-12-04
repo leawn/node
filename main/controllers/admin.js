@@ -70,16 +70,21 @@ exports.postAddProduct = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll((products) => {
-        res.render('admin/product-admin', {
-            prods: products,
-            pageTitle: 'Admin Product List',
-            path: '/admin/product-admin',
-            hasProducts: products.length > 0,
-            productCss: true,
-            formsCss: true
+    Product
+        .findAll()
+        .then(products => {
+            res.render('admin/product-admin', {
+                prods: products,
+                pageTitle: 'Admin Product List',
+                path: '/admin/product-admin',
+                hasProducts: products.length > 0,
+                productCss: true,
+                formsCss: true
+            });
+        })
+        .catch(err => {
+            console.log(err);
         });
-    });
 }
 
 exports.postDeleteProduct = (req, res, next) => {

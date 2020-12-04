@@ -22,12 +22,26 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
-    Product
-        .findById(prodId)
-        .then(([product]) => {
+    /*Product
+        .findAll({ where: { id: prodId } })
+        .then(products => {
             res.render('shop/product-detail', {
-                product: product[0],
-                pageTitle: product[0].title,
+                product: products[0],
+                pageTitle: products[0].title,
+                path: '/products',
+                productCss: true,
+                formsCss: true
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });*/
+    Product
+        .findByPk(prodId)
+        .then(product => {
+            res.render('shop/product-detail', {
+                product: product,
+                pageTitle: product.title,
                 path: '/products',
                 productCss: true,
                 formsCss: true
@@ -35,7 +49,7 @@ exports.getProduct = (req, res, next) => {
         })
         .catch((err) => {
             console.log(err);
-        })
+        });
 }
 
 exports.getIndex = (req, res, next) => {
