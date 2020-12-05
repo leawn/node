@@ -5,6 +5,8 @@ const shopRoutes = require('./routes/shop');
 const path = require('path');
 const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
+const Product = require('./models/Product');
+const User = require('./models/User');
 
 const app = express();
 
@@ -19,10 +21,19 @@ app.use(shopRoutes);
 
 app.use(errorController.getNotFound);
 
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
 sequelize
-    .sync()
-    .then(result => {
+    .sync({})
+    .then(() => {
+        return User.findByPk(1);
         //console.log(result);
+    })
+    .then(user => {
+        if(!user) {
+            User.create({ name: 'Leo', email: 'dummyemail@gmail.com'});
+        }
     })
     .catch(err => {
         console.log(err);
