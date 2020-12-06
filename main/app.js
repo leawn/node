@@ -1,16 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+/*const shopRoutes = require('./routes/shop');*/
 const path = require('path');
 const errorController = require('./controllers/error');
-const sequelize = require('./util/database');
+/*const sequelize = require('./util/database');
 const Product = require('./models/Product');
 const User = require('./models/User');
 const Cart = require('./models/Cart');
 const CartItem = require('./models/CartItem');
 const Order = require('./models/Order');
-const OrderItem = require('./models/OrderItem');
+const OrderItem = require('./models/OrderItem');*/
+const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    User
+    /*User
         .findByPk(1)
         .then(user => {
             req.user = user;
@@ -29,13 +30,20 @@ app.use((req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-        });
+        });*/
+    next();
 });
 
 app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+/*app.use(shopRoutes);*/
 
 app.use(errorController.getNotFound);
+
+mongoConnect(() => {
+    app.listen(3000);
+});
+
+/*
 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
@@ -68,4 +76,4 @@ sequelize
     })
     .catch(err => {
         console.log(err);
-    });
+    });*/

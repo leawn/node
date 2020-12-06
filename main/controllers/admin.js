@@ -10,7 +10,7 @@ exports.getAddProduct = (req, res, next) => {
     });
 }
 
-exports.postEditProduct = (req, res, next) => {
+/*exports.postEditProduct = (req, res, next) => {
     const prodId = req.body.productId;
     const updatedTitle = req.body.title;
     const updatedPrice = req.body.price;
@@ -42,8 +42,8 @@ exports.getEditProduct = (req, res, next) => {
     const prodId = req.params.productId;
     req.user
         .getProducts({ where: { id: prodId } })
-    /*Product
-        .findByPk(prodId)*/
+    /!*Product
+        .findByPk(prodId)*!/
         .then(products => {
             const product = products[0];
             if (!product) {
@@ -61,20 +61,23 @@ exports.getEditProduct = (req, res, next) => {
         .catch(err => {
             console.log(err);
         });
-}
+}*/
 
 exports.postAddProduct = (req, res, next) => {
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
     const price = req.body.price;
-    req.user
+    /*req.user
         .createProduct({
             title: title,
             price: price,
             imageUrl: imageUrl,
             description: description,
-        })
+        })*/
+    const product = new Product(title, price, description, imageUrl);
+    product
+        .save()
         .then(() => {
             console.log('Created btw');
             res.redirect('/admin/product-admin');
@@ -84,6 +87,7 @@ exports.postAddProduct = (req, res, next) => {
         })
 }
 
+/*
 exports.getProducts = (req, res, next) => {
     req.user
         .getProducts()
@@ -116,4 +120,4 @@ exports.postDeleteProduct = (req, res, next) => {
         .catch(err => {
             console.log(err);
         });
-}
+}*/
