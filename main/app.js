@@ -12,6 +12,7 @@ const CartItem = require('./models/CartItem');
 const Order = require('./models/Order');
 const OrderItem = require('./models/OrderItem');*/
 const mongoConnect = require('./util/database').mongoConnect;
+const User = require('./models/User');
 
 const app = express();
 
@@ -31,7 +32,15 @@ app.use((req, res, next) => {
         .catch(err => {
             console.log(err);
         });*/
-    next();
+    User
+        .findById("5fce52f077756cacf98d8bff")
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(err => {
+            console.log(err);
+        });
 });
 
 app.use('/admin', adminRoutes);

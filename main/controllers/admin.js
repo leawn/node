@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
+const User = require('../models/User');
 
-exports.getAddProduct = (req, res, next) => {
+exports.getAddProduct = (req, res) => {
     res.render('admin/edit-product', {
         pageTitle: 'Add Product',
         path: '/admin/add-product',
@@ -10,7 +11,7 @@ exports.getAddProduct = (req, res, next) => {
     });
 }
 
-exports.postEditProduct = (req, res, next) => {
+exports.postEditProduct = (req, res) => {
     const prodId = req.body.productId;
     const updatedTitle = req.body.title;
     const updatedPrice = req.body.price;
@@ -43,13 +44,14 @@ exports.postEditProduct = (req, res, next) => {
         /*})*/
 }
 
-exports.getEditProduct = (req, res, next) => {
+exports.getEditProduct = (req, res) => {
     const editMode = req.query.edit;
     if (!editMode) {
        return res.redirect('/')
     }
     const prodId = req.params.productId;
-    Product.findById(prodId)
+    Product
+        .findById(prodId)
     /*req.user
         .getProducts({ where: { id: prodId } })*/
     /*Product
@@ -73,7 +75,7 @@ exports.getEditProduct = (req, res, next) => {
         });
 }
 
-exports.postAddProduct = (req, res, next) => {
+exports.postAddProduct = (req, res) => {
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
@@ -85,7 +87,14 @@ exports.postAddProduct = (req, res, next) => {
             imageUrl: imageUrl,
             description: description,
         })*/
-    const product = new Product(title, price, description, imageUrl);
+    const product = new Product(
+        title,
+        price,
+        description,
+        imageUrl,
+        null,
+        req.user._id
+    );
     product
         .save()
         .then(() => {
@@ -98,7 +107,7 @@ exports.postAddProduct = (req, res, next) => {
 }
 
 
-exports.getProducts = (req, res, next) => {
+exports.getProducts = (req, res) => {
     Product
         .fetchAll()
         .then(products => {
@@ -132,7 +141,7 @@ exports.getProducts = (req, res, next) => {
 }
 
 
-exports.postDeleteProduct = (req, res, next) => {
+exports.postDeleteProduct = (req, res) => {
     const prodId = req.body.productId;
     Product
         /*.findById(prodId)*/
@@ -143,6 +152,30 @@ exports.postDeleteProduct = (req, res, next) => {
         .then(() => {
             console.log('Deleted KEKL');
             res.redirect('/admin/product-admin');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+exports.getCreateUser = (req, res) => {
+    res.render('admin/create-user', {
+        pageTitle: 'Create User',
+        path: 'admin/create-user',
+        productCss: true,
+        formsCss: true
+    })
+}
+
+exports.postCreateUser = (req, res) => {
+    const email = req.body.email;
+    const username = req.body.username;
+    const user = new User(username, email);
+    user
+        .save()
+        .then(() => {
+            console.log('Created new user');
+            res.redirect('/');
         })
         .catch(err => {
             console.log(err);
