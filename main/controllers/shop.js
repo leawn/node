@@ -69,8 +69,8 @@ exports.getIndex = (req, res, next) => {
         });
 }
 
-/*
-exports.getCart = (req, res, next) => {
+
+/*exports.getCart = (req, res, next) => {
     req.user
         .getCart()
         .then(cart => {
@@ -92,11 +92,22 @@ exports.getCart = (req, res, next) => {
         .catch(err => {
             console.log(err);
         });
-}
+}*/
 
 exports.postCart= (req, res, next) => {
     const prodId = req.body.productId;
-    let fetchedCart;
+    Product
+        .findById(prodId)
+        .then(product => {
+            return req.user.addToCart(product);
+        })
+        .then(result => {
+            console.log(result);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    /*let fetchedCart;
     let newQuantity = 1
     req.user
         .getCart()
@@ -127,10 +138,10 @@ exports.postCart= (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-        });
+        });*/
 }
 
-exports.postCartDeleteProduct = (req, res, next) => {
+/*exports.postCartDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
     req.user
         .getCart()
