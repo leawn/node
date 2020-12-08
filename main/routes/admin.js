@@ -3,7 +3,7 @@ const adminController = require('../controllers/admin');
 
 const router = express.Router();
 
-/*router.get('/add-product', adminController.getAddProduct);
+router.get('/add-product', adminController.getAddProduct);
 
 router.get('/product-admin', adminController.getProducts);
 
@@ -17,6 +17,6 @@ router.post('/delete-product', adminController.postDeleteProduct);
 
 router.get('/create-user', adminController.getCreateUser);
 
-router.post('/create-user', adminController.postCreateUser);*/
+router.post('/create-user', adminController.postCreateUser);
 
 module.exports = router;

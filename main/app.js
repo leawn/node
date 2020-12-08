@@ -34,9 +34,9 @@ app.use((req, res, next) => {
             console.log(err);
         });*/
     User
-        .findById("5fce52f077756cacf98d8bff")
+        .findById("5fcf6352087bc3acd68d8b85")
         .then(user => {
-            req.user = new User(user.username, user.email, user._id, user.cart);
+            req.user = user;
             next();
         })
         .catch(err => {
@@ -52,8 +52,26 @@ app.use(errorController.getNotFound);
 mongoose
     .connect('mongodb://localhost:27017/shop')
     .then(() => {
-    app.listen(3000);
-})
+        User.findOne().then(user => {
+            if (!user) {
+                const user = new User({
+                    name: 'Leo',
+                    email: 'leonrubner2809@gmail.com',
+                    cart: {
+                        items: []
+                    }
+                });
+                user.save()
+                    .then(() => {
+                        console.log('saved');
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        })
+        app.listen(3000);
+    })
     .catch(err => {
         console.log(err);
     });
