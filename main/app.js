@@ -1,9 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
+
 const path = require('path');
+
 const mongoose = require('mongoose');
+
 const errorController = require('./controllers/error');
 /*const sequelize = require('./util/database');
 const Product = require('./models/Product');
@@ -13,6 +18,7 @@ const CartItem = require('./models/CartItem');
 const Order = require('./models/Order');
 const OrderItem = require('./models/OrderItem');*/
 /*const mongoConnect = require('./util/database').mongoConnect;*/
+
 const User = require('./models/User');
 
 const app = express();
@@ -46,6 +52,7 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorController.getNotFound);
 
