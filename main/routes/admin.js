@@ -15,8 +15,8 @@ router.post('/edit-product', adminController.postEditProduct);
 
 router.post('/delete-product', adminController.postDeleteProduct);
 
-router.get('/create-user', adminController.getCreateUser);
+/*router.get('/create-user', adminController.getCreateUser);*/
 
-router.post('/create-user', adminController.postCreateUser);
+/*router.post('/create-user', adminController.postCreateUser);*/
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const Product = require('../models/Product');
-const User = require('../models/User');
+/*const User = require('../models/User');*/
 
 exports.getAddProduct = (req, res) => {
     res.render('admin/edit-product', {
@@ -126,6 +126,8 @@ exports.postAddProduct = (req, res) => {
 exports.getProducts = (req, res) => {
     Product
         .find()
+        /*.select('title price -_id')
+        .populate('userId', 'name')*/
         .then(products => {
             res.render('admin/product-admin', {
                 prods: products,
@@ -175,6 +177,7 @@ exports.postDeleteProduct = (req, res) => {
         });
 }
 
+/*
 exports.getCreateUser = (req, res) => {
     res.render('admin/create-user', {
         pageTitle: 'Create User',
@@ -197,4 +200,4 @@ exports.postCreateUser = (req, res) => {
         .catch(err => {
             console.log(err);
         });
-}
+}*/
