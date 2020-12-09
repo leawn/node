@@ -76,7 +76,7 @@ exports.getIndex = (req, res) => {
 
 
 exports.getCart = (req, res) => {
-    req.session.user
+    req.user
         .populate('cart.items.productId')
         .execPopulate()
         .then(user => {
@@ -119,7 +119,7 @@ exports.postCart= (req, res) => {
     Product
         .findById(prodId)
         .then(product => {
-            return req.session.user.addToCart(product);
+            return req.user.addToCart(product);
         })
         .then(result => {
             console.log(result);
@@ -164,7 +164,7 @@ exports.postCart= (req, res) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    req.session.user
+    req.user
         .removeFromCart(prodId)
         .then(() => {
             res.redirect('cart');
@@ -192,7 +192,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.postOrder = (req, res, next) => {
     /*let fetchedCart;*/
-    req.session.user
+    req.user
         .populate('cart.items.productId')
         .execPopulate()
         .then(user => {
@@ -201,8 +201,8 @@ exports.postOrder = (req, res, next) => {
             });
             const order = new Order({
                 user: {
-                    name: req.session.user.name,
-                    userId: req.session.user._id
+                    name: req.user.name,
+                    userId: req.user._id
                 },
                 products: products
             });
@@ -211,7 +211,7 @@ exports.postOrder = (req, res, next) => {
     /*req.user
         .addOrder()*/
         .then(() => {
-            return req.session.user.clearCart();
+            return req.user.clearCart();
         })
         .then(() => {
             res.redirect('/orders');
@@ -251,7 +251,7 @@ exports.postOrder = (req, res, next) => {
 
 exports.getOrders = (req, res, next) => {
     Order
-        .find({ 'user.userId': req.session.user._id })
+        .find({ 'user.userId': req.user._id })
     /*req.user
         .getOrders(/!*{ include: ['products'] }*!/)*/
         .then(orders => {
@@ -266,5 +266,5 @@ exports.getOrders = (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
