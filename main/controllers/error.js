@@ -4,6 +4,7 @@ exports.getNotFound = (req, res, next) => {
         activeShop: false,
         formsCss: false,
         productCss: false,
-        path: '/404'
+        path: '/404',
+        isLoggedIn: req.session.isLoggedIn
     });
 }

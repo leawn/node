@@ -8,6 +8,8 @@ const authRoutes = require('./routes/auth');
 const path = require('path');
 
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const errorController = require('./controllers/error');
 /*const sequelize = require('./util/database');
@@ -21,16 +23,28 @@ const OrderItem = require('./models/OrderItem');*/
 
 const User = require('./models/User');
 
+const MONGODB_URI = 'mongodb://localhost:27017/shop';
+
 const app = express();
+const store = new MongoDBStore({
+    uri: MONGODB_URI,
+    collection: 'sessions'
+});
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
+    store: store
+}))
 
-app.use((req, res, next) => {
-    /*User
+/*app.use((req, res, next) => {
+    /!*User
         .findByPk(1)
         .then(user => {
             req.user = user;
@@ -38,17 +52,17 @@ app.use((req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-        });*/
-    User
+        });*!/
+    /!*User
         .findById("5fcf6352087bc3acd68d8b85")
         .then(user => {
-            req.user = user;
+            req.session.user = user;
             next();
         })
         .catch(err => {
             console.log(err);
-        });
-});
+        });*!/
+});*/
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -57,7 +71,7 @@ app.use(authRoutes);
 app.use(errorController.getNotFound);
 
 mongoose
-    .connect('mongodb://localhost:27017/shop')
+    .connect(MONGODB_URI)
     .then(() => {
         User.findOne().then(user => {
             if (!user) {

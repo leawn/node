@@ -7,7 +7,8 @@ exports.getAddProduct = (req, res) => {
         path: '/admin/add-product',
         productCss: true,
         formsCss: true,
-        editing: false
+        editing: false,
+        isLoggedIn: req.session.isLoggedIn
     });
 }
 
@@ -84,7 +85,8 @@ exports.getEditProduct = (req, res) => {
                 productCss: true,
                 formsCss: true,
                 editing: editMode,
-                product: product
+                product: product,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => {
@@ -109,7 +111,7 @@ exports.postAddProduct = (req, res) => {
         price: price,
         description: description,
         imageUrl: imageUrl,
-        userId: req.user._id
+        userId: req.session.user._id
     });
     product
         .save()
@@ -135,7 +137,8 @@ exports.getProducts = (req, res) => {
                 path: '/admin/product-admin',
                 hasProducts: products.length > 0,
                 productCss: true,
-                formsCss: true
+                formsCss: true,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => {
