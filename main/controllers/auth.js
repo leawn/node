@@ -9,10 +9,11 @@ exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         path: '/login',
         pageTitle: 'Login',
-        productCss: true,
+        errorMessage: req.flash('error')
+        /*productCss: true,
         formsCss: true,
-        isLoggedIn: req.session.isLoggedIn
-    })
+        isLoggedIn: req.session.isLoggedIn*/
+    });
 };
 
 exports.postLogin = (req, res, next) => {
@@ -22,6 +23,7 @@ exports.postLogin = (req, res, next) => {
         .findOne({email: email})
         .then(user => {
             if (!user) {
+                req.flash('error', 'Invalid email.');
                 return res.redirect('/login');
             }
             bcrypt
@@ -35,6 +37,7 @@ exports.postLogin = (req, res, next) => {
                             res.redirect('/');
                         })
                     }
+                    req.flash('error', 'Invalid password.');
                     res.redirect('/login');
                 })
                 .catch(err => {
@@ -62,6 +65,7 @@ exports.postSignup = (req, res, next) => {
         .findOne({email: email})
         .then(userDoc => {
             if (userDoc) {
+                req.flash('error', 'Email already exists.');
                 return res.redirect('/signup');
             }
             return bcrypt
@@ -87,7 +91,7 @@ exports.postSignup = (req, res, next) => {
 exports.getSignup = (req, res, next) => {
     res.render('auth/signup', {
         path: '/signup',
-        pageTitle: 'Signup',
-        isLoggedIn: false
+        pageTitle: 'Signup'
+        /*isLoggedIn: false*/
     });
 }

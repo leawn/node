@@ -10,8 +10,8 @@ exports.getAddProduct = (req, res) => {
         path: '/admin/add-product',
         /*productCss: true,
         formsCss: true,*/
-        editing: false,
-        isLoggedIn: req.session.isLoggedIn
+        editing: false
+        /*isLoggedIn: req.session.isLoggedIn*/
     });
 }
 
@@ -88,8 +88,8 @@ exports.getEditProduct = (req, res) => {
                 /*formsCss: true,
                 productCss: true,*/
                 editing: editMode,
-                product: product,
-                isLoggedIn: req.session.isLoggedIn
+                product: product
+                /*isLoggedIn: req.session.isLoggedIn*/
             });
         })
         .catch(err => {
@@ -138,10 +138,10 @@ exports.getProducts = (req, res) => {
                 prods: products,
                 pageTitle: 'Admin Product List',
                 path: '/admin/product-admin',
-                hasProducts: products.length > 0,
+                hasProducts: products.length > 0
                 /*formsCss: true,
-                productCss: true,*/
-                isLoggedIn: req.session.isLoggedIn
+                productCss: true,
+                isLoggedIn: req.session.isLoggedIn*/
             });
         })
         .catch(err => {

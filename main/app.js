@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const errorController = require('./controllers/error');
 /*const sequelize = require('./util/database');
@@ -45,6 +46,7 @@ app.use(session({
     })
 );
 app.use(csrfProtection);
+app.use(flash());
 
 app.use((req, res, next) => {
     if (!req.session.user) {

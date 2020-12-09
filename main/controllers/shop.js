@@ -10,10 +10,10 @@ exports.getProducts = (req, res) => {
                 prods: products,
                 pageTitle: 'All products',
                 path: '/products',
-                hasProducts: products.length > 0,
-                productCss: true,
+                hasProducts: products.length > 0
+                /*productCss: true,
                 formsCss:true,
-                isLoggedIn: req.session.isLoggedIn
+                isLoggedIn: req.session.isLoggedIn*/
             });
         })
         .catch(err => {
@@ -44,10 +44,10 @@ exports.getProduct = (req, res) => {
             res.render('shop/product-detail', {
                 product: product,
                 pageTitle: product.title,
-                path: '/products',
-                productCss: true,
+                path: '/products'
+                /*productCss: true,
                 formsCss: true,
-                isLoggedIn: req.session.isLoggedIn
+                isLoggedIn: req.session.isLoggedIn*/
             });
         })
         .catch((err) => {
@@ -63,9 +63,9 @@ exports.getIndex = (req, res) => {
                 prods: products,
                 pageTitle: 'Shop',
                 path: '/',
-                hasProducts: products.length > 0,
-                productCss: true,
-                formsCss:true
+                hasProducts: products.length > 0
+                /*productCss: true,
+                formsCss:true*/
             });
         })
         .catch(err => {
@@ -83,10 +83,10 @@ exports.getCart = (req, res) => {
             res.render('shop/cart', {
                 products: products,
                 path: '/cart',
-                pageTitle: 'Your cart',
-                productCss: true,
+                pageTitle: 'Your cart'
+                /*productCss: true,
                 formsCss: true,
-                isLoggedIn: req.session.isLoggedIn
+                isLoggedIn: req.session.isLoggedIn*/
             });
         })
         .catch(err => {
@@ -257,10 +257,10 @@ exports.getOrders = (req, res, next) => {
             res.render('shop/orders', {
                 pageTitle: 'Your Orders',
                 path: '/orders',
-                productCss: true,
-                formsCss:true,
-                orders: orders,
-                isLoggedIn: req.session.isLoggedIn
+                /*productCss: true,
+                formsCss:true,*/
+                orders: orders
+                /*isLoggedIn: req.session.isLoggedIn*/
             });
         })
         .catch(err => {
