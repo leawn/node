@@ -15,7 +15,7 @@ router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 
 router.post('/edit-product', isAuth, adminController.postEditProduct);
 
-router.post('/delete-product', isAuth,adminController.postDeleteProduct);
+router.post('/delete-product', isAuth, adminController.postDeleteProduct);
 
 /*router.get('/create-user', adminController.getCreateUser);*/
 

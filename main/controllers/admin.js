@@ -2,14 +2,14 @@ const Product = require('../models/Product');
 /*const User = require('../models/User');*/
 
 exports.getAddProduct = (req, res) => {
-    if (req.session.isLoggedIn) {
+    /*if (req.locals.isLoggedIn) {
         return res.redirect('/login');
-    }
+    }*/
     res.render('admin/edit-product', {
         pageTitle: 'Add Product',
         path: '/admin/add-product',
-        productCss: true,
-        formsCss: true,
+        /*productCss: true,
+        formsCss: true,*/
         editing: false,
         isLoggedIn: req.session.isLoggedIn
     });
@@ -85,8 +85,8 @@ exports.getEditProduct = (req, res) => {
             res.render('admin/edit-product', {
                 pageTitle: 'Edit Product',
                 path: '/admin/edit-product',
-                productCss: true,
-                formsCss: true,
+                /*formsCss: true,
+                productCss: true,*/
                 editing: editMode,
                 product: product,
                 isLoggedIn: req.session.isLoggedIn
@@ -124,7 +124,7 @@ exports.postAddProduct = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-        })
+        });
 }
 
 
@@ -139,8 +139,8 @@ exports.getProducts = (req, res) => {
                 pageTitle: 'Admin Product List',
                 path: '/admin/product-admin',
                 hasProducts: products.length > 0,
-                productCss: true,
-                formsCss: true,
+                /*formsCss: true,
+                productCss: true,*/
                 isLoggedIn: req.session.isLoggedIn
             });
         })
