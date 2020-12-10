@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { validationResult } = require('express-validator/check');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
@@ -28,13 +29,27 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        /*console.log(errors.array());*/
+        return res
+            .status(422)
+            .render('auth/login', {
+                path: '/login',
+                pageTitle: 'Login',
+                errorMessage: errors.array()
+            });
+    }
+
     User
         .findOne({email: email})
         .then(user => {
-            if (!user) {
+        /*.then(user => {*/
+            /*if (!user) {
                 req.flash('error', 'Invalid email.');
                 return res.redirect('/login');
-            }
+            }*/
             bcrypt
                 .compare(password, user.password)
                 .then((doMatch) => {
@@ -52,7 +67,7 @@ exports.postLogin = (req, res, next) => {
                 .catch(err => {
                     console.log(err);
                     res.redirect('/login');
-                });
+                })
         })
         .catch(err => {
             console.log(err);
@@ -69,15 +84,29 @@ exports.postLogout = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
-    User
+    /*const confirmPassword = req.body.confirmPassword;*/
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res
+            .status(422)
+            .render('auth/signup', {
+                path: '/signup',
+                pageTitle: 'Signup',
+                errorMessage: errors.array()
+            });
+    }
+    /*User
         .findOne({email: email})
         .then(userDoc => {
             if (userDoc) {
-                req.flash('error', 'Email already exists.   ');
+                req.flash(
+                    'error',
+                    'Email already exists.'
+                );
                 return res.redirect('/signup');
-            }
-            return bcrypt
+            }*/
+            bcrypt
                 .hash(password, 12)
                 .then(hashedPassword => {
                     const user = new User({
@@ -99,11 +128,9 @@ exports.postSignup = (req, res, next) => {
                 .catch(err => {
                     console.log(err);
                 });
-
-        })
-        .catch(err => {
+        /*.catch(err => {
             console.log(err);
-        });
+        });*/
 }
 
 exports.getSignup = (req, res, next) => {

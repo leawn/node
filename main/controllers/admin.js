@@ -31,16 +31,19 @@ exports.postEditProduct = (req, res) => {
     Product
         .findById(prodId)
         .then(product => {
+            if (product.userId.toString() !== req.user._id.toString()) {
+                return res.redirect('/');
+            }
             product.title = updatedTitle;
             product.price = updatedPrice;
             product.imageUrl = updatedImageUrl;
             product.description = updatedDesc;
-            return product.save();
-
-        })
-        .then(() => {
-            console.log('Updated monkaOMEGA');
-            res.redirect('/admin/product-admin');
+            return product
+                .save()
+                .then(() => {
+                    console.log('Updated monkaOMEGA');
+                    res.redirect('/admin/product-admin');
+            });
         })
         .catch(err => {
             console.log(err);
@@ -130,7 +133,9 @@ exports.postAddProduct = (req, res) => {
 
 exports.getProducts = (req, res) => {
     Product
-        .find()
+        .find({
+            userId: req.user._id
+        })
         /*.select('title price -_id')
         .populate('userId', 'name')*/
         .then(products => {
@@ -173,7 +178,10 @@ exports.postDeleteProduct = (req, res) => {
         /*.then(product => {
             return product.destroy();
         })*/
-        .findByIdAndRemove(prodId)
+        .deleteOne({
+            _id: prodId,
+            userId: req.user._id
+        })
         .then(() => {
             console.log('Deleted KEKL');
             res.redirect('/admin/product-admin');
