@@ -93,7 +93,12 @@ exports.postSignup = (req, res, next) => {
             .render('auth/signup', {
                 path: '/signup',
                 pageTitle: 'Signup',
-                errorMessage: errors.array()
+                errorMessage: errors.array(),
+                oldInput: {
+                    email: email,
+                    password: password,
+                    confirmPassword: req.body.confirmPassword
+                }
             });
     }
     /*User
@@ -137,7 +142,12 @@ exports.getSignup = (req, res, next) => {
     res.render('auth/signup', {
         path: '/signup',
         pageTitle: 'Signup',
-        errorMessage: req.flash('error')
+        errorMessage: req.flash('error'),
+        oldInput: {
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
         /*isLoggedIn: false*/
     });
 }
