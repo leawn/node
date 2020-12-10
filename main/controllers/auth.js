@@ -19,7 +19,11 @@ exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         path: '/login',
         pageTitle: 'Login',
-        errorMessage: req.flash('error')
+        errorMessage: req.flash('error'),
+        oldInput: {
+            email: '',
+            password: ''
+        }
         /*productCss: true,
         formsCss: true,
         isLoggedIn: req.session.isLoggedIn*/
@@ -38,7 +42,11 @@ exports.postLogin = (req, res, next) => {
             .render('auth/login', {
                 path: '/login',
                 pageTitle: 'Login',
-                errorMessage: errors.array()
+                errorMessage: errors.array(),
+                oldInput: {
+                    email: email,
+                    password: password
+                }
             });
     }
 
@@ -99,7 +107,6 @@ exports.postSignup = (req, res, next) => {
                     password: password,
                     confirmPassword: req.body.confirmPassword
                 },
-                validationErrors: errors.array()
             });
     }
     /*User
@@ -124,12 +131,12 @@ exports.postSignup = (req, res, next) => {
                 })
                 .then(() => {
                     res.redirect('/login');
-                    return transporter.sendMail({
+                    /*return transporter.sendMail({
                         to: email,
                         from: 'node@complete.com',
                         subject: 'Signup succeeded',
                         html: '<h1>You successfully signed up!</h1>'
-                    });
+                    });*/
                 })
                 .catch(err => {
                     console.log(err);
@@ -148,8 +155,7 @@ exports.getSignup = (req, res, next) => {
             email: '',
             password: '',
             confirmPassword: ''
-        },
-        validationErrors: []
+        }
         /*isLoggedIn: false*/
     });
 }

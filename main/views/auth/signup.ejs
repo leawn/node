@@ -14,7 +14,7 @@
         <div class="form-control">
             <label for="email">E-Mail</label>
             <input
-                    class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : ''%>"
+                    class="<%= errorMessage.find(e => e.param === 'email') ? 'invalid' : ''%>"
                     type="email"
                     name="email"
                     id="email"
@@ -24,20 +24,22 @@
         <div class="form-control">
             <label for="password">Password</label>
             <input
-                    class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : ''%>"
+                    class="<%= errorMessage.find(e => e.param === 'password') ? 'invalid' : ''%>"
                     type="password"
                     name="password"
                     id="password"
-                    value="<%= oldInput.password ? oldInput.password : ''%>">
+                    value="<%= oldInput.password ? oldInput.password : ''%>"
+            >
         </div>
         <div class="form-control">
             <label for="confirmPassword">Confirm Password</label>
             <input
-                    class="<%= validationErrors.find(e => e.param === 'confirmPassword') ? 'invalid' : ''%>"
+                    class="<%= errorMessage.find(e => e.param === 'confirmPassword') ? 'invalid' : ''%>"
                     type="password"
                     name="confirmPassword"
                     id="confirmPassword"
-                    value="<%= oldInput.confirmPassword ? oldInput.confirmPassword : ''%>">
+                    value="<%= oldInput.confirmPassword ? oldInput.confirmPassword : ''%>"
+            >
         </div>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button class="btn" type="submit">Login</button>

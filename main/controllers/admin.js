@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const { validationResult } = require('express-validator/check');
 /*const User = require('../models/User');*/
 
 exports.getAddProduct = (req, res) => {
@@ -10,7 +11,9 @@ exports.getAddProduct = (req, res) => {
         path: '/admin/add-product',
         /*productCss: true,
         formsCss: true,*/
-        editing: false
+        editing: false,
+        hasError: false,
+        errorMessage: req.flash('error')
         /*isLoggedIn: req.session.isLoggedIn*/
     });
 }
@@ -21,6 +24,25 @@ exports.postEditProduct = (req, res) => {
     const updatedPrice = req.body.price;
     const updatedImageUrl = req.body.imageUrl;
     const updatedDesc = req.body.description;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res
+            .status(422)
+            .render('admin/edit-product', {
+                pageTitle: 'Edit product',
+                path: '/admin/edit-product',
+                editing: true,
+                hasError: true,
+                product: {
+                    title: updatedTitle,
+                    imageUrl: updatedImageUrl,
+                    description: updatedDesc,
+                    price: updatedPrice,
+                    _id: prodId
+                },
+                errorMessage: errors.array()
+            });
+    }
     /*const product = new Product(
         updatedTitle,
         updatedPrice,
@@ -91,7 +113,9 @@ exports.getEditProduct = (req, res) => {
                 /*formsCss: true,
                 productCss: true,*/
                 editing: editMode,
-                product: product
+                product: product,
+                hasError: false,
+                errorMessage: req.flash('error')
                 /*isLoggedIn: req.session.isLoggedIn*/
             });
         })
@@ -105,6 +129,28 @@ exports.postAddProduct = (req, res) => {
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
     const price = req.body.price;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res
+            .status(422)
+            .render('admin/edit-product', {
+                pageTitle: 'Add product',
+                path: '/admin/edit-product',
+                editing: false,
+                hasError: true,
+                product: {
+                    title: title,
+                    imageUrl: imageUrl,
+                    description: description,
+                    price: price
+                },
+                errorMessage: errors.array()
+                /*hasProducts: products.length > 0*/
+                /*formsCss: true,
+                productCss: true,
+                isLoggedIn: req.session.isLoggedIn*/
+        });
+    }
     /*req.user
         .createProduct({
             title: title,
