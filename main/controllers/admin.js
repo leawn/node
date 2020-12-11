@@ -1,3 +1,4 @@
+const fileHelper = require('../util/file');
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
 const { validationResult } = require('express-validator/check');
@@ -60,6 +61,7 @@ exports.postEditProduct = (req, res, next) => {
             product.title = updatedTitle;
             product.price = updatedPrice;
             if (image) {
+                fileHelper.deleteFile(product.imageUrl);
                 product.imageUrl = image.path;
             }
             product.description = updatedDesc;
@@ -249,18 +251,31 @@ exports.getProducts = (req, res) => {
 }
 
 
-exports.postDeleteProduct = (req, res) => {
+exports.postDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
     Product
-        /*.findById(prodId)*/
-        /*.deleteById(prodId)*/
-        /*.then(product => {
+        .findById(prodId)
+        .then(product => {
+            if (!product) {
+                return next(new Error('Product not found.'))
+            }
+            fileHelper.deleteFile(product.imageUrl);
+            return Product
+                .deleteOne({
+                    _id: prodId,
+                    userId: req.user._id
+                });
+        })
+    /*Product
+        /!*.findById(prodId)*!/
+        /!*.deleteById(prodId)*!/
+        /!*.then(product => {
             return product.destroy();
-        })*/
+        })*!/
         .deleteOne({
             _id: prodId,
             userId: req.user._id
-        })
+        })*/
         .then(() => {
             console.log('Deleted KEKL');
             res.redirect('/admin/product-admin');
