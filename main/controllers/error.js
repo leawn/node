@@ -8,3 +8,11 @@ exports.getNotFound = (req, res, next) => {
         isLoggedIn: req.session.isLoggedIn
     });
 }
+
+exports.getServerError = (req, res, next) => {
+    res.status(500).render('server-error', {
+        pageTitle: 'Server error',
+        path: '/500',
+        isLoggedIn: req.session.isLoggedIn
+    });
+}
