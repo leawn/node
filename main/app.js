@@ -131,6 +131,7 @@ app.use(errorController.getNotFound)
 
 app.use((error, req, res, next) => {
     /*res.status(error.httpStatusCode).render() |*/
+    console.log(error);
     res
         .status(500)
         .render('server-error', {
