@@ -4,25 +4,42 @@ const Product = require('../models/Product');
 const Order = require('../models/Order');
 const PDFDocument = require('pdfkit');
 
-exports.getProducts = (req, res) => {
+const ITEMS_PER_PAGE = 1;
+
+exports.getProducts = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalItems;
+
     Product
         .find()
-        /*.fetchAll()*/
-        .then(products => {
-            res.render('shop/product-list', {
-                prods: products,
-                pageTitle: 'All products',
-                path: '/products',
-                hasProducts: products.length > 0
-                /*productCss: true,
-                formsCss:true,
-                isLoggedIn: req.session.isLoggedIn*/
-            });
+        .countDocuments()
+        .then(numProducts => {
+            totalItems = numProducts;
+            return Product
+                .find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+                .then(products => {
+                    res.render('shop/product-list', {
+                        prods: products,
+                        pageTitle: 'Products',
+                        path: '/products',
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+                    });
+                })
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            next(err);
         });
 }
 
@@ -62,24 +79,44 @@ exports.getProduct = (req, res) => {
         });
 }
 
-exports.getIndex = (req, res) => {
+exports.getIndex = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalItems;
+
     Product
         .find()
-        .then(products => {
-            res.render('shop/index', {
-                prods: products,
-                pageTitle: 'Shop',
-                path: '/',
-                hasProducts: products.length > 0
-                /*productCss: true,
-                formsCss:true*/
-            });
-        })
+        .countDocuments()
+        .then(numProducts => {
+            totalItems = numProducts;
+            return Product
+                .find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+                .then(products => {
+                    res.render('shop/index', {
+                        prods: products,
+                        pageTitle: 'Shop',
+                        path: '/',
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+                        /*hasProducts: products.length > 0*/
+                        /*productCss: true,
+                        formsCss:true*/
+                    });
+                })
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                });
+    })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-        });
+        next(err);
+    });
 }
 
 

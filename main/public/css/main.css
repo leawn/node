@@ -243,8 +243,28 @@ form {
 }
 
 .user-message--error {
-    border-color: red;
+    border-color: #ff0000;
     background: palevioletred;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #000066;
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    margin: 0 1rem
+}
+
+.pagination a:hover,
+.pagination a:active,
+.pagination a.active {
+    background: #ffeb3b;
+    color: #F6C6CE;
 }
 
 @media (min-width: 768px) {
