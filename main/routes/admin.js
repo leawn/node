@@ -65,9 +65,9 @@ router.post('/edit-product',
     adminController.postEditProduct
 );
 
-router.post('/delete-product',
+router.delete('/product/:productId',
     isAuth,
-    adminController.postDeleteProduct
+    adminController.deleteProduct
 );
 
 /*router.get('/create-user', adminController.getCreateUser);*/
