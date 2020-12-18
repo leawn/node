@@ -37,6 +37,9 @@ const store = new MongoDBStore({
 });
 const csrfProtection = csrf();
 
+/*const privateKey = fs.readFileSync('server.key');
+const certificate = fs.readFileSync('server.cert');*/
+
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'images');
@@ -171,6 +174,8 @@ mongoose
                     });
             }
         })*/
+        /*https
+            .createServer({key: privateKey, cert: certificate}, app)*/
         app.listen(process.env.PORT || 3000);
     })
     .catch(err => {
